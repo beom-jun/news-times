@@ -18,7 +18,7 @@ const menus =document.querySelectorAll(".menus button");
 menus.forEach(menu=>menu.addEventListener("click",(event)=>getnewsbycategory(event)))
 
 const getLastesnews = async ()=>{
-    const url=new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`
+    const url=new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=us&apiKey=${API_KEY}`
     ); 
     const response =await fetch(url);
     const data = await response.json()
@@ -30,7 +30,7 @@ const getLastesnews = async ()=>{
 const getnewsbycategory=async (event)=>{
      const category = event.target.textContent.toLowerCase();
     console.log("category",category);
-    const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`
+    const url = new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=us&category=${category}&apiKey=${API_KEY}`
     );
     const response = await fetch(url)
     const data =await response.json()
