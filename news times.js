@@ -14,9 +14,11 @@ const openSearchBox = () => {
 
 const API_KEY = `d442e5b521b24b44b3eff15add9db6bd`;
 let newslist=[];
+const menus =document.querySelectorAll(".menus button");
+menus.forEach(menu=>menu.addEventListener("click",(event)=>getnewsbycategory(event)))
 
 const getLastesnews = async ()=>{
-    const url=new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=kr&apiKey=${API_KEY}`
+    const url=new URL(`https://newsapi.org/v2/top-headlines?country=kr&apiKey=${API_KEY}`
     ); 
     const response =await fetch(url);
     const data = await response.json()
@@ -25,11 +27,23 @@ const getLastesnews = async ()=>{
     console.log("rrr",newslist)
 };
 
+const getnewsbycategory=async (event)=>{
+     const category = event.target.textContent.toLowerCase();
+    console.log("category",category);
+    const url = new URL(`https://newsapi.org/v2/top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`
+    );
+    const response = await fetch(url)
+    const data =await response.json()
+    console.log("ddd",data)
+    newslist = data.articles; //2. newslist에 data.articles를 넣어준다
+    render(); // 1.render로 보여주기 전 render 함수에 처음에 정의 된 newslist를 재정립 해준다.
+};
+
 const render=()=>{
     const newshtml = newslist.map(news=>`<div class="row news">
     <div class="col-lg-4">
         <img class="newsimg-size"
-            src="${news.urlToImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU"}" />
+            src="${news.urlToImage || "https://t3.ftcdn.net/jpg/04/34/72/82/360_F_434728286_OWQQvAFoXZLdGHlObozsolNeuSxhpr84.jpg"}" />
     </div>
 
     <div class="col-lg-8">
