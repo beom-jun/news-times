@@ -16,7 +16,7 @@ const API_KEY = `d442e5b521b24b44b3eff15add9db6bd`;
 let newslist=[];
 
 const getLastesnews = async ()=>{
-    const url=new URL(`https://newsapi.org/v2/top-headlines?country=kr&content=200&apiKey=${API_KEY}`
+    const url=new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=kr&apiKey=${API_KEY}`
     ); 
     const response =await fetch(url);
     const data = await response.json()
