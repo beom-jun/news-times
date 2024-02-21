@@ -16,7 +16,7 @@ const API_KEY = `d442e5b521b24b44b3eff15add9db6bd`;
 let newslist=[];
 
 const getLastesnews = async ()=>{
-    const url=new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=us&apiKey=${API_KEY}`
+    const url=new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=kr&apiKey=${API_KEY}`
     ); 
     const response =await fetch(url);
     const data = await response.json()
@@ -25,22 +25,11 @@ const getLastesnews = async ()=>{
     console.log("rrr",newslist)
 };
 
-
-const imageError=(imageUrl)=>{
-    let image=new Image();
-    image.src=imageUrl
-    if(!image.complete){
-        return false
-    }else{
-        return true
-    }
-}
-
 const render=()=>{
     const newshtml = newslist.map(news=>`<div class="row news">
     <div class="col-lg-4">
         <img class="newsimg-size"
-            src=${news.urlToImage && imageError(news.urlToImage)? news.urlToImage: "img/noimage.jpg"}>
+            src="${news.urlToImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU"}" />
     </div>
 
     <div class="col-lg-8">
@@ -58,11 +47,13 @@ const render=()=>{
         </div>
     </div>
 </div>`
-) .join("");
+)
+
+.join("");
+
 
     document.getElementById("news-board").innerHTML=newshtml
 }
 
 getLastesnews();
-
 
