@@ -40,7 +40,7 @@ const render=()=>{
     const newshtml = newslist.map(news=>`<div class="row news">
     <div class="col-lg-4">
         <img class="newsimg-size"
-            src="${news.urlToImage && imageError(news.urlToImage)? news.urlToImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU"}" />
+            src="${news.urlToImage || imageError(news.urlToImage)? news.urlToImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU"}" />
     </div>
 
     <div class="col-lg-8">
