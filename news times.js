@@ -29,16 +29,21 @@ const render=()=>{
     const newshtml = newslist.map(news=>`<div class="row news">
     <div class="col-lg-4">
         <img class="newsimg-size"
-            src=${news.urlToImage} />
+            src="${news.urlToImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU"}" />
     </div>
 
     <div class="col-lg-8">
         <h2>${news.title}</h2>
         <p>
-            ${news.description}
+            ${news.description == null || news.description ==""
+            ?"내용 없음"
+            :news.description.length > 200
+            ?news.description.substring(0,200) + "..."
+            :news.description
+        }
         </p>
         <div>
-            ${news.source.name} * ${news.publishedAt}
+            ${news.source.name || "No Soucre"} * ${moment(news.publishedAt).startOf('hour').fromNow()}
         </div>
     </div>
 </div>`
