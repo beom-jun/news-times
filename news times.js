@@ -17,6 +17,7 @@ let newslist=[];
 const menus =document.querySelectorAll(".menus button");
 menus.forEach(menu=>menu.addEventListener("click",(event)=>getnewsbycategory(event)))
 
+
 const getLastesnews = async ()=>{
     const url=new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=us&apiKey=${API_KEY}`
     ); 
@@ -34,10 +35,22 @@ const getnewsbycategory=async (event)=>{
     );
     const response = await fetch(url)
     const data =await response.json()
-    console.log("ddd",data)
+    console.log(data)
     newslist = data.articles; //2. newslist에 data.articles를 넣어준다
     render(); // 1.render로 보여주기 전 render 함수에 처음에 정의 된 newslist를 재정립 해준다.
 };
+
+const searchNews=async ()=>{
+    const keyword = document.getElementById("search-input").value
+    console.log(keyword);
+    const url = new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=us&q=${keyword}&apiKey=${API_KEY}`
+    );
+    const response = await fetch(url)
+    const data =await response.json()
+    console.log(data)
+    newslist = data.articles;
+    render();
+}
 
 const render=()=>{
     const newshtml = newslist.map(news=>`<div class="row news">
@@ -71,3 +84,13 @@ const render=()=>{
 
 getLastesnews();
 
+
+//enter키 입력
+let input = document.getElementById("search-input");
+
+    input.addEventListener("keyup", function (event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
+        document.getElementById("button-enter").click();
+      }
+    });
