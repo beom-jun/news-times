@@ -17,39 +17,55 @@ let newslist=[];
 const menus =document.querySelectorAll(".menus button");
 menus.forEach(menu=>menu.addEventListener("click",(event)=>getnewsbycategory(event)))
 
+let url = new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=kr&apiKey=${API_KEY}`)
+
+let getnews =async ()=>{
+
+    try{
+
+    const response =await fetch(url);
+    
+    const data = await response.json();
+    
+        if(response.status===200){      //status가 200이면 웹이 정상작동
+            if(data.articles.length===0){
+                throw new Error("No Result For This Search");
+            }
+            newslist = data.articles;
+            render();
+        }else{
+            throw new Error(data.message)
+        }
+
+    }catch(error){
+        errorRender(error.message) //밑에 errorRender를 호출 할 때 마다 error.message를 보여줌
+    }
+
+};
+
 
 const getLastesnews = async ()=>{
-    const url=new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=us&apiKey=${API_KEY}`
+    url=new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=kr&apiKey=${API_KEY}`
+
     ); 
-    const response =await fetch(url);
-    const data = await response.json()
-    newslist = data.articles; //newslist가 확정 되는 부분 -> 이 다음줄에 render함수 호출
-    render()
-    console.log("rrr",newslist)
+    getnews();
 };
 
 const getnewsbycategory=async (event)=>{
      const category = event.target.textContent.toLowerCase();
     console.log("category",category);
-    const url = new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=us&category=${category}&apiKey=${API_KEY}`
+    url = new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`
+
     );
-    const response = await fetch(url)
-    const data =await response.json()
-    console.log(data)
-    newslist = data.articles; //2. newslist에 data.articles를 넣어준다
-    render(); // 1.render로 보여주기 전 render 함수에 처음에 정의 된 newslist를 재정립 해준다.
+    getnews();
 };
 
 const searchNews=async ()=>{
     const keyword = document.getElementById("search-input").value
     console.log(keyword);
-    const url = new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=us&q=${keyword}&apiKey=${API_KEY}`
+    url = new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=kr&q=${keyword}&apiKey=${API_KEY}`
     );
-    const response = await fetch(url)
-    const data =await response.json()
-    console.log(data)
-    newslist = data.articles;
-    render();
+    getnews();
 }
 
 const render=()=>{
@@ -82,7 +98,16 @@ const render=()=>{
     document.getElementById("news-board").innerHTML=newshtml
 }
 
+const errorRender=(errorMessage)=>{
+   const errorHtml = `<div class="alert alert-danger" role="alert">
+  ${errorMessage}
+    </div>`;
+
+    document.getElementById("news-board").innerHTML=errorHtml //에러가 발생하면 에러 메시지를 뉴스를 보여주는 곳에서 보여줌 
+}
+
 getLastesnews();
+
 
 
 //enter키 입력
