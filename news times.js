@@ -17,28 +17,35 @@ let newslist=[];
 const menus =document.querySelectorAll(".menus button");
 menus.forEach(menu=>menu.addEventListener("click",(event)=>getnewsbycategory(event)))
 
-let url = new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=kr&apiKey=${API_KEY}`)
+let url = new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=kr&apiKey=${API_KEY}`);
 
-let getnews =async ()=>{
+let totalResults = 0
+let page = 1
+const pageSize = 10 //한 페이지 안에 뜨는 뉴스 갯수
+const groupSize = 5 
+
+const getnews =async ()=>{
 
     try{
-
-    const response =await fetch(url);
+     url.searchParams.set("page",page); //"page"라는 파라미터를 셋팅한다. 그 값은 위의 page 함수 값이다. 이걸 다르게 표현하면 &page=page 이다.
+     url.searchParams.set("pageSize", pageSize); //여기서 두 파라미터 함수는 fetch 함수 전에 쓰여야 한다
     
-    const data = await response.json();
+     const response =await fetch(url);
+     const data = await response.json();
     
-        if(response.status===200){      //status가 200이면 웹이 정상작동
+        if(response.status===200){ 
             if(data.articles.length===0){
                 throw new Error("No Result For This Search");
             }
             newslist = data.articles;
+            totalResults = data.totalResults
             render();
+            paginationRender();
         }else{
             throw new Error(data.message)
         }
-
     }catch(error){
-        errorRender(error.message) //밑에 errorRender를 호출 할 때 마다 error.message를 보여줌
+        errorRender(error.message); //밑에 errorRender를 호출 할 때 마다 error.message를 보여줌
     }
 
 };
@@ -46,7 +53,6 @@ let getnews =async ()=>{
 
 const getLastesnews = async ()=>{
     url=new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=kr&apiKey=${API_KEY}`
-
     ); 
     getnews();
 };
@@ -55,7 +61,6 @@ const getnewsbycategory=async (event)=>{
      const category = event.target.textContent.toLowerCase();
     console.log("category",category);
     url = new URL(`https://benevolent-toffee-df4f4d.netlify.app//top-headlines?country=kr&category=${category}&apiKey=${API_KEY}`
-
     );
     getnews();
 };
@@ -104,11 +109,62 @@ const errorRender=(errorMessage)=>{
     </div>`;
 
     document.getElementById("news-board").innerHTML=errorHtml //에러가 발생하면 에러 메시지를 뉴스를 보여주는 곳에서 보여줌 
+};
+
+
+const paginationRender=()=>{
+    //totalResult
+    //page
+    //pageSize
+    //groupSize
+    //totalpage
+    const totalPages = Math.ceil(totalResults/pageSize);
+    //pageGroup
+    const pageGroup = Math.ceil(page/groupSize);
+    //lastPage
+
+    let lastPage = pageGroup * groupSize;  //마지막 페이지그룹이 그룹사이즈보다 작으면 lastpage = totalpage
+    if(lastPage > totalPages){
+        lastPage = totalPages;
+    }
+    //firstPage
+    const firstPage = lastPage - (groupSize-1)<=0? 1 : lastPage - (groupSize-1) ;
+
+
+let paginationHtml=``
+
+for(i=firstPage; i<=lastPage; i++){
+    paginationHtml+=`<li class="page-item ${i===page? 'active': ''}" onclick="moveToPage(${i})"><a class="page-link pointer">${i}</a></li>`
 }
+
+document.querySelector(".pagination").innerHTML=paginationHtml
+
+};
+const moveToPage=(pagenum)=>{
+    console.log("movetopage",pagenum);
+    page = pagenum;
+    getnews();
+};
 
 getLastesnews();
 
-
+/* <nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav> */
 
 //enter키 입력
 let input = document.getElementById("search-input");
