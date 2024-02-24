@@ -37,6 +37,11 @@
     border-bottom: 2px solid black;
 }
 
+.topline{
+    display: flex;
+    justify-content: start;
+}
+
 
 .hamburger-menu {
     display: flex;
@@ -55,8 +60,8 @@
 }
 
 .bar {
-    width: 25px;
-    height: 3px;
+    width: 27px;
+    height: 13px;
     background-color: #333;
 }
 .nav-menu {
@@ -73,7 +78,7 @@
     padding: 10px 15px;
     text-decoration: none;
     color: #333;
-    border-radius: 3px;
+    border-radius: 10px;
     transition: background-color 0.3s;
 }
 
@@ -85,19 +90,39 @@
 .input-deco{
     width: 350px;
     text-align: center;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    height: 30px;
+}
+
+.icon-deco{
+    font-size: 21px;
+    padding-top: 6px;
+    margin-right: 3px;
+    margin-top: 6px;
+    position: relative;
+    top: -1px;
+    font-size: 28px 
+}
+
+.search-posi{
+    position: relative;
+    top: 0px;
+    font-size: 30px 
 }
 
 
 @media(max-width:670px){
     .hamburger-menu{
         display: block;
-        gap: 50px;
+        gap: 150px;
+        padding-top: 13px;
     }
 
     .bar{
         padding-top: 5px;
-        margin-top: 1px;
-        height: 1px;
+        margin-top: 2.5px;
+        height: 3px;
     }
 
     .menus{
@@ -105,7 +130,32 @@
     }
 
     .input-deco{
-        width: 250px;
+        width: 170px;
+        height: 30px;
+        padding-top: 6px;
+        margin-top: 3px;
+    }
+
+    .topline{
+        display: flex;
+        justify-content: start;
+       
+    }
+
+    .icon-deco{
+        font-size: 22px;
+        margin-right: 8px;
+        padding-top: 8px;
+    }
+
+    .search-posi{
+        position: relative;
+        top: -1px;
+        font-size: 23px 
+    }
+
+    .headline svg{
+        width: 340px;
     }
 }
 
@@ -124,6 +174,8 @@
     .menus{
         display: none;
     }
+
+  
 }
 
 .pointer{
